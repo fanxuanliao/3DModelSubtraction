@@ -1,30 +1,9 @@
 using UnityEngine;
-using Parabox.CSG;
 
 public class PuzzlePieceObject : MonoBehaviour
 {
     Vector3 m_Offset;
     float m_ZCoord;
-    GameObject m_Composite;
-
-    [SerializeField]
-    MeshFilter m_MeshFilter;
-    [SerializeField]
-    MeshRenderer m_MeshRenderer;
-
-    enum PuzzlePieceStatus
-    {
-        None,
-        Selected,
-        Dragging,
-        Subtract,
-    }
-
-    void Start()
-    {
-        m_MeshFilter = this.gameObject.GetComponent<MeshFilter>();
-        m_MeshRenderer = this.gameObject.GetComponent<MeshRenderer>();
-    }
 
     Vector3 GetMouseAsWorldPoint()
     {
@@ -55,12 +34,11 @@ public class PuzzlePieceObject : MonoBehaviour
     #endregion
 
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        var otherPiece = other.transform.GetComponent<PuzzlePieceObject>();
-        if (otherPiece != null && otherPiece.tag == "Hole")
+        if (other != null && other.tag == "Hole")
         {
-            SelectionController._SelectionController.Subtract(this.gameObject, otherPiece.gameObject);
+            SelectionController._SelectionController.Subtract(this.gameObject, other.gameObject);
         }
     }
 

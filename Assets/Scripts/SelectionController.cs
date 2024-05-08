@@ -91,36 +91,39 @@ public class SelectionController : MonoBehaviour
         right = rightObj;
         Model result;
 
-        result = CSG.Subtract(left, right);
-        composite = new GameObject();
-        composite.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        composite.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        result = CSG.Subtract(leftObj, rightObj);
+        // composite = new GameObject();
+        // composite.AddComponent<MeshFilter>().sharedMesh = result.mesh;
+        // composite.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
 
-        GenerateBarycentric(composite);
-
-        Destroy(left);
-        Destroy(right);
+        // left.GetComponent<MeshFilter>().sharedMesh = result.mesh;
+        // left.GetComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
+        GenerateBarycentric(left, result);
+        // left.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
+        // left.GetComponent<MeshFilter>().sharedMesh.RecalculateTangents();
+        // Destroy(left);
+        // Destroy(right);
     }
     public Material wireframeMaterial = null;
 
-    public void Reset()
-    {
-        if (composite) Destroy(composite);
-        if (left) Destroy(left);
-        if (right) Destroy(right);
+    // public void Reset()
+    // {
+    //     if (composite) Destroy(composite);
+    //     if (left) Destroy(left);
+    //     if (right) Destroy(right);
 
-        var go = Instantiate(fodder[index]);
+    //     var go = Instantiate(fodder[index]);
 
-        left = Instantiate(go.transform.GetChild(0).gameObject);
-        right = Instantiate(go.transform.GetChild(1).gameObject);
+    //     left = Instantiate(go.transform.GetChild(0).gameObject);
+    //     right = Instantiate(go.transform.GetChild(1).gameObject);
 
-        Destroy(go);
+    //     Destroy(go);
 
-        wireframeMaterial = left.GetComponent<MeshRenderer>().sharedMaterial;
+    //     wireframeMaterial = left.GetComponent<MeshRenderer>().sharedMaterial;
 
-        GenerateBarycentric(left);
-        GenerateBarycentric(right);
-    }
+    //     GenerateBarycentric(left);
+    //     GenerateBarycentric(right);
+    // }
 
 
     /**
@@ -128,9 +131,12 @@ public class SelectionController : MonoBehaviour
      * in the colors channel.  Not the most ideal wireframe implementation,
      * but it works and didn't take an inordinate amount of time :)
      */
-    public void GenerateBarycentric(GameObject go)
+    public void GenerateBarycentric(GameObject go, Model result)
     {
-        Mesh m = go.GetComponent<MeshFilter>().sharedMesh;
+        Vector3 originalScale = go.transform.localScale;
+        go.transform.localScale = Vector3.one;
+
+        Mesh m = result.mesh;
 
         if (m == null) return;
 
@@ -166,6 +172,9 @@ public class SelectionController : MonoBehaviour
         wireframeMesh.colors = colors;
         wireframeMesh.uv = uv;
 
+
+        go.transform.localScale = originalScale;
         go.GetComponent<MeshFilter>().sharedMesh = wireframeMesh;
+        go.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
     }
 }
