@@ -21,7 +21,8 @@ public class PuzzlePieceObject : MonoBehaviour
     #region mouse handler
     void OnMouseDrag()
     {
-        transform.position = GetMouseAsWorldPoint() + m_Offset;
+        var newPos = GetMouseAsWorldPoint() + m_Offset;
+        transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
     }
 
     void OnMouseDown()
@@ -41,7 +42,4 @@ public class PuzzlePieceObject : MonoBehaviour
             SelectionController._SelectionController.Subtract(this.gameObject, other.gameObject);
         }
     }
-
-
-
 }

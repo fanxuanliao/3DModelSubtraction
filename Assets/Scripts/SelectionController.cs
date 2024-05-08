@@ -13,6 +13,10 @@ public class SelectionController : MonoBehaviour
     Transform m_HighlightTransform;
     Transform m_SelectionTransform;
     RaycastHit m_RaycastHit;
+    [SerializeField] MeshFilter m_BoxMesh;
+    [SerializeField] GameObject Box2;
+    [SerializeField] GameObject Hole1;
+    [SerializeField] GameObject Hole2;
 
     void Awake()
     {
@@ -77,10 +81,16 @@ public class SelectionController : MonoBehaviour
 
     public void Subtract(GameObject leftObj, GameObject rightObj)
     {
+        // leftObj.GetComponent<MeshFilter>().sharedMesh = m_BoxMesh.sharedMesh; // reset 
         Model result;
-        result = CSG.Subtract(leftObj, rightObj);
+        result = CSG.Subtract(m_BoxMesh.gameObject, rightObj);
         GenerateBarycentric(leftObj, result);
     }
+
+    //         public void Reset()
+    //     {
+    // m_Box
+    //     }
 
     /**
      * Rebuild mesh with individual triangles, adding barycentric coordinates
