@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Parabox.CSG;
-using UnityEditor;
 
 public class SelectionController : MonoBehaviour
 {
@@ -12,9 +11,7 @@ public class SelectionController : MonoBehaviour
     Material m_OriginalMaterialHighlight;
     Material m_OriginalMaterialSelection;
     Transform m_HighlightTransform;
-    public GameObject HighlightObject => m_HighlightTransform.gameObject;
     Transform m_SelectionTransform;
-    public GameObject SelectionObject => m_SelectionTransform.gameObject;
     RaycastHit m_RaycastHit;
 
     void Awake()
@@ -78,53 +75,12 @@ public class SelectionController : MonoBehaviour
         }
     }
 
-    GameObject left, right, composite;
-
-    public GameObject[] fodder; // prefabs containing two mesh children
-    int index = 0; // the index of example mesh prefabs
-
     public void Subtract(GameObject leftObj, GameObject rightObj)
     {
-
-        var pos = leftObj.transform.position;
-        left = leftObj;
-        right = rightObj;
         Model result;
-
         result = CSG.Subtract(leftObj, rightObj);
-        // composite = new GameObject();
-        // composite.AddComponent<MeshFilter>().sharedMesh = result.mesh;
-        // composite.AddComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-
-        // left.GetComponent<MeshFilter>().sharedMesh = result.mesh;
-        // left.GetComponent<MeshRenderer>().sharedMaterials = result.materials.ToArray();
-        GenerateBarycentric(left, result);
-        // left.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
-        // left.GetComponent<MeshFilter>().sharedMesh.RecalculateTangents();
-        // Destroy(left);
-        // Destroy(right);
+        GenerateBarycentric(leftObj, result);
     }
-    public Material wireframeMaterial = null;
-
-    // public void Reset()
-    // {
-    //     if (composite) Destroy(composite);
-    //     if (left) Destroy(left);
-    //     if (right) Destroy(right);
-
-    //     var go = Instantiate(fodder[index]);
-
-    //     left = Instantiate(go.transform.GetChild(0).gameObject);
-    //     right = Instantiate(go.transform.GetChild(1).gameObject);
-
-    //     Destroy(go);
-
-    //     wireframeMaterial = left.GetComponent<MeshRenderer>().sharedMaterial;
-
-    //     GenerateBarycentric(left);
-    //     GenerateBarycentric(right);
-    // }
-
 
     /**
      * Rebuild mesh with individual triangles, adding barycentric coordinates
@@ -156,11 +112,6 @@ public class SelectionController : MonoBehaviour
         {
             vertices[i] = mesh_vertices[tris[i]];
             normals[i] = mesh_normals[tris[i]];
-            uv[i] = mesh_uv[tris[i]];
-
-            colors[i] = i % 3 == 0 ? new Color(1, 0, 0, 0) : (i % 3) == 1 ? new Color(0, 1, 0, 0) : new Color(0, 0, 1, 0);
-
-            tris[i] = i;
         }
 
         Mesh wireframeMesh = new Mesh();
@@ -169,12 +120,8 @@ public class SelectionController : MonoBehaviour
         wireframeMesh.vertices = vertices;
         wireframeMesh.triangles = tris;
         wireframeMesh.normals = normals;
-        wireframeMesh.colors = colors;
-        wireframeMesh.uv = uv;
-
 
         go.transform.localScale = originalScale;
         go.GetComponent<MeshFilter>().sharedMesh = wireframeMesh;
-        go.GetComponent<MeshFilter>().sharedMesh.RecalculateBounds();
     }
 }
