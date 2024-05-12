@@ -276,7 +276,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 60
+  field of view: 26.991467
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -287,8 +287,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -484,12 +484,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a1775f63cfd40a4807f4226c2cc98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HighlightMaterial: {fileID: 2100000, guid: 6133a692690f54e6ba2ca98023f431f9, type: 2}
   m_SelectionMaterial: {fileID: 2100000, guid: cfcaae828842944fb81ae39ca4c24c4a, type: 2}
   m_BoxMesh: {fileID: 1433024584}
   Box2: {fileID: 0}
-  Hole1: {fileID: 0}
-  Hole2: {fileID: 0}
 --- !u!4 &1844641018
 Transform:
   m_ObjectHideFlags: 0
@@ -642,7 +639,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 717af6ecd2d78494c88a3d9ef81bdbb2, type: 2}
+  - {fileID: 2100000, guid: cfcaae828842944fb81ae39ca4c24c4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -721,7 +718,7 @@ Transform:
   m_GameObject: {fileID: 243897354436635468}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 0.5, z: -0.451}
+  m_LocalPosition: {x: -0.202, y: 0.5, z: -0.269}
   m_LocalScale: {x: 0.5, y: 0.2, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -802,6 +799,7 @@ GameObject:
   - component: {fileID: 506575480084823603}
   - component: {fileID: 8968948786789513067}
   - component: {fileID: 2606994533758715481}
+  - component: {fileID: 8968948786789513068}
   m_Layer: 0
   m_Name: box
   m_TagString: Box
@@ -829,7 +827,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e03422b048e148b2bb73329cdc48062, type: 2}
+  - {fileID: 2100000, guid: a8e384361e90a4592b24424debfb5784, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -863,6 +861,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ad60081578b43a688fba43c6b15e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8968948786789513068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738188122736208245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
 --- !u!33 &8992839408774589739
 MeshFilter:
   m_ObjectHideFlags: 0

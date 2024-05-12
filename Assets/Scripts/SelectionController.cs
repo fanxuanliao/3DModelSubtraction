@@ -6,75 +6,48 @@ public class SelectionController : MonoBehaviour
 {
     public static SelectionController _SelectionController;
 
-    [SerializeField] Material m_HighlightMaterial;
     [SerializeField] Material m_SelectionMaterial;
-    Material m_OriginalMaterialHighlight;
     Material m_OriginalMaterialSelection;
-    Transform m_HighlightTransform;
     Transform m_SelectionTransform;
     RaycastHit m_RaycastHit;
     [SerializeField] MeshFilter m_BoxMesh;
     [SerializeField] GameObject Box2;
-    [SerializeField] GameObject Hole1;
-    [SerializeField] GameObject Hole2;
 
     void Awake()
     {
+        Camera.main.depthTextureMode = DepthTextureMode.Depth;
+
         _SelectionController = this;
     }
 
     void Update()
     {
-        if (m_HighlightTransform != null)
-        {
-            m_HighlightTransform.GetComponent<MeshRenderer>().sharedMaterial = m_OriginalMaterialHighlight;
-            m_HighlightTransform = null;
-        }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out m_RaycastHit)) //Make sure you have EventSystem in the hierarchy before using EventSystem
-        {
-            if (!m_RaycastHit.transform.CompareTag("Box")) return;
-
-            m_HighlightTransform = m_RaycastHit.transform;
-            if (m_HighlightTransform != m_SelectionTransform)
-            {
-                if (m_HighlightTransform.GetComponent<MeshRenderer>().material != m_HighlightMaterial)
-                {
-                    m_OriginalMaterialHighlight = m_HighlightTransform.GetComponent<MeshRenderer>().material;
-                    m_HighlightTransform.GetComponent<MeshRenderer>().material = m_HighlightMaterial;
-                }
-            }
-            else
-            {
-                m_HighlightTransform = null;
-            }
-        }
 
         // Selection
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out m_RaycastHit))
         {
-            if (m_HighlightTransform)
+
+            if (m_SelectionTransform != null)
             {
-                if (m_SelectionTransform != null)
-                {
-                    m_SelectionTransform.GetComponent<MeshRenderer>().material = m_OriginalMaterialSelection;
-                }
-                m_SelectionTransform = m_RaycastHit.transform;
-                if (m_SelectionTransform.GetComponent<MeshRenderer>().material != m_SelectionMaterial)
-                {
-                    m_OriginalMaterialSelection = m_OriginalMaterialHighlight;
-                    m_SelectionTransform.GetComponent<MeshRenderer>().material = m_SelectionMaterial;
-                }
-                m_HighlightTransform = null;
+                m_SelectionTransform.GetComponent<MeshRenderer>().material = m_OriginalMaterialSelection;
             }
-            else
+            m_SelectionTransform = m_RaycastHit.transform;
+            var selectionMaterial = m_SelectionTransform.GetComponent<MeshRenderer>().material;
+
+            if (selectionMaterial != m_SelectionMaterial)
             {
-                if (m_SelectionTransform)
-                {
-                    m_SelectionTransform.GetComponent<MeshRenderer>().material = m_OriginalMaterialSelection;
-                    m_SelectionTransform = null;
-                }
+                m_OriginalMaterialSelection = selectionMaterial;
+                selectionMaterial = m_SelectionMaterial;
+            }
+        }
+        else
+        {
+            if (m_SelectionTransform)
+            {
+                m_SelectionTransform.GetComponent<MeshRenderer>().material = m_OriginalMaterialSelection;
+                m_SelectionTransform = null;
             }
         }
     }
